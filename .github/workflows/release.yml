@@ -44,11 +44,11 @@ jobs:
           PYPIMGR_NO_VENV: "1"
       - name: Release notes from CHANGELOG.md
         run: python scripts/pypimgr/pypimgr.py notes "${GITHUB_REF_NAME}" > notes.md
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-notes
           path: notes.md
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-dist
           path: .cache/pypimgr/whasp/artifacts/*

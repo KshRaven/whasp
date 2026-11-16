@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whasp"
+dynamic = ["version"]
+description = "Whasp - self-hosted server control panel for Linux and Windows (web GUI, terminal app, CLI and extensions)"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Bradley Odimmasi" }]
+requires-python = ">=3.9"
+keywords = ["control panel", "server management", "hosting panel", "self-hosted", "sysadmin"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: System Administrators",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Typing :: Typed",
+]
+# The web server, software catalog, console and notifications are pure standard library; the only dependency is the
+# curses module the terminal app uses on Windows.
+#   pip install whasp          panel + command line (whasp)       -> run `whasp`
+#   pip install -e ".[build]"  + build and upload tools (build, twine)
+#   pip install -e ".[dev]"    + [build] + pytest and ruff
+dependencies = ["windows-curses>=2.3; sys_platform == 'win32'"]
+
+[project.optional-dependencies]
+build = ["build>=1.0", "twine>=5.0"]
+dev = ["whasp[build]", "pytest>=8", "ruff"]
+
+[project.scripts]
+whasp = "whasp.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/KshRaven/whasp"
+Documentation = "https://github.com/KshRaven/whasp#readme"
+Source = "https://github.com/KshRaven/whasp"
+Issues = "https://github.com/KshRaven/whasp/issues"
+Changelog = "https://github.com/KshRaven/whasp/blob/main/CHANGELOG.md"
+
+[tool.setuptools.dynamic]
+version = { attr = "whasp._version.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["whasp*"]
+
+[tool.setuptools.package-data]
+whasp = ["py.typed", "web/*", "web/ui/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82", "F401", "F811", "I"]
+ignore = []
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+known-first-party = ["whasp"]
+
+[tool.ruff.lint.per-file-ignores]
+"whasp/_version.py" = ["I002"]
+"tests/*" = ["I001"]
+"scripts/*" = ["I001", "I002", "F401"]
+"experimental/*" = ["I002"]

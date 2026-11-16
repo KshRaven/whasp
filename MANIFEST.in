@@ -1,0 +1,10 @@
+include README.md LICENSE CHANGELOG.md
+recursive-include whasp/web *
+include whasp/py.typed
+prune tests
+prune scripts
+prune docs
+prune examples
+prune experimental
+prune contrib
+global-exclude __pycache__ *.py[cod] .env*
